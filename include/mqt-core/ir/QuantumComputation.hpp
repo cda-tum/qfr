@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2024 Chair for Design Automation, TUM
+ * All rights reserved.
+ *
+ * SPDX-License-Identifier: MIT
+ *
+ * Licensed under the MIT License
+ */
+
 #pragma once
 
 #include "Definitions.hpp"
@@ -216,7 +225,9 @@ public:
   explicit QuantumComputation(const std::size_t nq, const std::size_t nc = 0U,
                               const std::size_t s = 0)
       : seed(s) {
-    addQubitRegister(nq);
+    if (nq > 0) {
+      addQubitRegister(nq);
+    }
     if (nc > 0) {
       addClassicalRegister(nc);
     }
@@ -692,29 +703,32 @@ public:
   void classicControlled(const OpType op, const Qubit target,
                          const ClassicalRegister& controlRegister,
                          const std::uint64_t expectedValue = 1U,
+                         const ComparisonKind cmp = ComparisonKind::Eq,
                          const std::vector<fp>& params = {}) {
     classicControlled(op, target, Controls{}, controlRegister, expectedValue,
-                      params);
+                      cmp, params);
   }
   void classicControlled(const OpType op, const Qubit target,
                          const Control control,
                          const ClassicalRegister& controlRegister,
                          const std::uint64_t expectedValue = 1U,
+                         const ComparisonKind cmp = ComparisonKind::Eq,
                          const std::vector<fp>& params = {}) {
     classicControlled(op, target, Controls{control}, controlRegister,
-                      expectedValue, params);
+                      expectedValue, cmp, params);
   }
   void classicControlled(const OpType op, const Qubit target,
                          const Controls& controls,
                          const ClassicalRegister& controlRegister,
                          const std::uint64_t expectedValue = 1U,
+                         const ComparisonKind cmp = ComparisonKind::Eq,
                          const std::vector<fp>& params = {}) {
     checkQubitRange(target, controls);
     checkClassicalRegister(controlRegister);
     std::unique_ptr<Operation> gate =
         std::make_unique<StandardOperation>(controls, target, op, params);
     emplace_back<ClassicControlledOperation>(std::move(gate), controlRegister,
-                                             expectedValue);
+                                             expectedValue, cmp);
   }
 
   /// strip away qubits with no operations applied to them and which do not pop

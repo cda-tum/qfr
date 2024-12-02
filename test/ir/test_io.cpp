@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2024 Chair for Design Automation, TUM
+ * All rights reserved.
+ *
+ * SPDX-License-Identifier: MIT
+ *
+ * Licensed under the MIT License
+ */
+
 #include "Definitions.hpp"
 #include "ir/QuantumComputation.hpp"
 #include "ir/operations/CompoundOperation.hpp"
@@ -587,7 +596,7 @@ TEST_F(IO, UseQelib1Gate) {
   EXPECT_EQ(op->size(), 9U);
 }
 
-TEST_F(IO, ParametrizedGateDefinition) {
+TEST_F(IO, ParameterizedGateDefinition) {
   *qc = qc::QuantumComputation::fromQASM(
       "qreg q[1];"
       "gate foo(theta, beta) q { rz(theta) q; rx(beta) q; }"

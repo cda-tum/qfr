@@ -1,10 +1,17 @@
+# Copyright (c) 2024 Chair for Design Automation, TUM
+# All rights reserved.
+#
+# SPDX-License-Identifier: MIT
+#
+# Licensed under the MIT License
+
 """MQT Core - The Backbone of the Munich Quantum Toolkit."""
 
 from __future__ import annotations
 
 import os
 from pathlib import Path
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING
 
 from ._version import version as __version__
 from ._version import version_tuple as version_info
@@ -13,21 +20,23 @@ from .ir import QuantumComputation
 if TYPE_CHECKING:
     from qiskit.circuit import QuantumCircuit
 
-    """The type of input that can be used to load a quantum circuit."""
-    CircuitInputType = Union[QuantumComputation, str, os.PathLike[str], QuantumCircuit]
 
-
-def load(input_circuit: CircuitInputType) -> QuantumComputation:
+def load(input_circuit: QuantumComputation | str | os.PathLike[str] | QuantumCircuit) -> QuantumComputation:
     """Load a quantum circuit from any supported format as a :class:`~mqt.core.ir.QuantumComputation`.
 
     Args:
-        input_circuit: The input circuit to translate to a :class:`~mqt.core.ir.QuantumComputation`. This can be a :class:`~mqt.core.ir.QuantumComputation` itself, a file name to any of the supported file formats, an OpenQASM (2.0 or 3.0) string, or a Qiskit :class:`~qiskit.circuit.QuantumCircuit`.
+        input_circuit: The input circuit to translate to a :class:`~mqt.core.ir.QuantumComputation`.
+                       This can be a :class:`~mqt.core.ir.QuantumComputation` itself,
+                       a file name to any of the supported file formats,
+                       an OpenQASM (2.0 or 3.0) string, or
+                       a Qiskit :class:`~qiskit.circuit.QuantumCircuit`.
 
     Returns:
         The :class:`~mqt.core.ir.QuantumComputation`.
 
     Raises:
-        ValueError: If the input circuit is a Qiskit :class:`~qiskit.circuit.QuantumCircuit` but the `qiskit` extra is not installed.
+        ValueError: If the input circuit is a Qiskit :class:`~qiskit.circuit.QuantumCircuit`,
+                    but the `qiskit` extra is not installed.
         FileNotFoundError: If the input circuit is a file name and the file does not exist.
     """
     if isinstance(input_circuit, QuantumComputation):
@@ -54,10 +63,4 @@ def load(input_circuit: CircuitInputType) -> QuantumComputation:
     return qiskit_to_mqt(input_circuit)
 
 
-__all__ = [
-    "__version__",
-    "load",
-    "version_info",
-]
-if TYPE_CHECKING:
-    __all__ += ["CircuitInputType"]
+__all__ = ["__version__", "load", "version_info"]

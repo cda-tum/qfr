@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2024 Chair for Design Automation, TUM
+ * All rights reserved.
+ *
+ * SPDX-License-Identifier: MIT
+ *
+ * Licensed under the MIT License
+ */
+
 #include "Definitions.hpp"
 #include "ir/Permutation.hpp"
 #include "ir/QuantumComputation.hpp"
@@ -1153,4 +1162,13 @@ TEST_F(QFRFunctionality, emptyPermutation) {
   EXPECT_EQ(perm.apply(Controls{0U}), Controls{0U});
   EXPECT_EQ(perm.maxKey(), 0U);
   EXPECT_EQ(perm.maxValue(), 0U);
+}
+
+TEST_F(QFRFunctionality, NoRegisterOnEmptyCircuit) {
+  // This is a regression test. Previously, the following code would throw an
+  // exception because even zero-qubit circuits had an empty register named "q".
+  qc::QuantumComputation qc(0U);
+  qc.addQubitRegister(1U, "p");
+  EXPECT_NO_THROW(qc.addQubitRegister(1U, "q"));
+  EXPECT_EQ(qc.getQregs().size(), 2U);
 }

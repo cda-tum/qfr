@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2024 Chair for Design Automation, TUM
+ * All rights reserved.
+ *
+ * SPDX-License-Identifier: MIT
+ *
+ * Licensed under the MIT License
+ */
+
 #pragma once
 
 #include "../Permutation.hpp"
@@ -81,6 +90,8 @@ public:
   [[nodiscard]] auto getExpectedValue() const { return expectedValue; }
 
   [[nodiscard]] auto getOperation() const { return op.get(); }
+
+  [[nodiscard]] auto getComparisonKind() const { return comparisonKind; }
 
   [[nodiscard]] const Targets& getTargets() const override {
     return op->getTargets();

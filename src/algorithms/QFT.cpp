@@ -1,6 +1,16 @@
+/*
+ * Copyright (c) 2024 Chair for Design Automation, TUM
+ * All rights reserved.
+ *
+ * SPDX-License-Identifier: MIT
+ *
+ * Licensed under the MIT License
+ */
+
 #include "algorithms/QFT.hpp"
 
 #include "Definitions.hpp"
+#include "ir/operations/ClassicControlledOperation.hpp"
 #include "ir/operations/OpType.hpp"
 
 #include <cmath>
@@ -48,7 +58,7 @@ void QFT::createCircuit() {
         } else {
           const auto powerOfTwo = std::pow(2., i - j + 1);
           const auto lambda = PI / powerOfTwo;
-          classicControlled(P, 0, {d, 1U}, 1U, std::vector{lambda});
+          classicControlled(P, 0, {d, 1U}, 1U, Eq, std::vector{lambda});
         }
       }
 

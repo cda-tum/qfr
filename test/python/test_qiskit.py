@@ -1,3 +1,10 @@
+# Copyright (c) 2024 Chair for Design Automation, TUM
+# All rights reserved.
+#
+# SPDX-License-Identifier: MIT
+#
+# Licensed under the MIT License
+
 """Test Qiskit import."""
 
 from __future__ import annotations
@@ -201,7 +208,7 @@ def test_symbolic() -> None:
     assert mqt_qc[0].name.strip() == "rx"
     assert isinstance(mqt_qc[0], SymbolicOperation)
     assert isinstance(mqt_qc[0].get_parameter(0), Expression)
-    expr = cast(Expression, mqt_qc[0].get_parameter(0))
+    expr = cast("Expression", mqt_qc[0].get_parameter(0))
     print(expr)
     assert expr.num_terms() == 3
     assert expr.terms[0].coefficient == -1
@@ -232,7 +239,7 @@ def test_symbolic_two_qubit() -> None:
     assert mqt_qc[0].name.strip() == "rxx"
     assert isinstance(mqt_qc[0], SymbolicOperation)
     assert isinstance(mqt_qc[0].get_parameter(0), Expression)
-    expr = cast(Expression, mqt_qc[0].get_parameter(0))
+    expr = cast("Expression", mqt_qc[0].get_parameter(0))
     assert expr.num_terms() == 1
     assert expr.constant == 0
     assert not mqt_qc.is_variable_free()
@@ -341,7 +348,11 @@ def test_final_layout_without_permutation() -> None:
 # test fixture for the backend using GenericBackendV2
 @pytest.fixture
 def backend() -> GenericBackendV2:
-    """Fixture for the backend using GenericBackendV2."""
+    """Fixture for the backend using GenericBackendV2.
+
+    Returns:
+        A generic five-qubit backend to be used for compilation.
+    """
     return GenericBackendV2(
         num_qubits=5,
         basis_gates=["id", "rz", "sx", "x", "cx", "reset"],

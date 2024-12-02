@@ -1,3 +1,10 @@
+# Copyright (c) 2024 Chair for Design Automation, TUM
+# All rights reserved.
+#
+# SPDX-License-Identifier: MIT
+#
+# Licensed under the MIT License
+
 """Functionality for interoperability with Qiskit."""
 
 from __future__ import annotations
@@ -280,8 +287,8 @@ def _emplace_operation(
     raise NotImplementedError(msg)
 
 
-_SUM_REGEX = re.compile("[+|-]?[^+-]+")
-_PROD_REGEX = re.compile("[*/]?[^*/]+")
+_SUM_REGEX = re.compile(r"[+|-]?[^+-]+")
+_PROD_REGEX = re.compile(r"[*/]?[^*/]+")
 
 
 def _parse_symbolic_expression(qiskit_expr: ParameterExpression | float) -> float | Expression:
@@ -343,7 +350,7 @@ def _add_operation(
     if any(isinstance(parameter, Expression) for parameter in parameters):
         qc.append(SymbolicOperation(controls, target, type_, parameters))
     else:
-        qc.append(StandardOperation(controls, target, type_, cast(list[float], parameters)))
+        qc.append(StandardOperation(controls, target, type_, cast("list[float]", parameters)))
     return parameters
 
 
@@ -362,7 +369,7 @@ def _add_two_target_operation(
     if any(isinstance(parameter, Expression) for parameter in parameters):
         qc.append(SymbolicOperation(controls, target1, target2, type_, parameters))
     else:
-        qc.append(StandardOperation(controls, target1, target2, type_, cast(list[float], parameters)))
+        qc.append(StandardOperation(controls, target1, target2, type_, cast("list[float]", parameters)))
     return parameters
 
 
@@ -415,7 +422,7 @@ def _import_definition(
     carg_map = dict(zip(circ.clbits, cargs))
 
     qc.append(CompoundOperation())
-    comp_op = cast(CompoundOperation, qc[-1])
+    comp_op = cast("CompoundOperation", qc[-1])
 
     params = []
     for instruction in circ.data:
@@ -423,7 +430,13 @@ def _import_definition(
         mapped_cargs = [carg_map[carg] for carg in instruction.clbits]
         operation = instruction.operation
         new_params = _emplace_operation(
-            comp_op, operation, mapped_qargs, mapped_cargs, operation.params, qubit_map, clbit_map
+            comp_op,
+            operation,
+            mapped_qargs,
+            mapped_cargs,
+            operation.params,
+            qubit_map,
+            clbit_map,
         )
         params.extend(new_params)
     return params

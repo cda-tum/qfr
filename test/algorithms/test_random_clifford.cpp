@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2024 Chair for Design Automation, TUM
+ * All rights reserved.
+ *
+ * SPDX-License-Identifier: MIT
+ *
+ * Licensed under the MIT License
+ */
+
 #include "algorithms/RandomCliffordCircuit.hpp"
 #include "dd/FunctionalityConstruction.hpp"
 #include "dd/Package.hpp"
@@ -31,9 +40,7 @@ TEST_P(RandomClifford, simulate) {
   auto dd = std::make_unique<dd::Package<>>(nq);
   auto qc = qc::RandomCliffordCircuit(nq, nq * nq, 12345);
   auto in = dd->makeZeroState(nq);
-
-  std::cout << qc << "\n";
-  ASSERT_NO_THROW({ simulate(&qc, in, *dd); });
+  ASSERT_NO_THROW({ dd::simulate(&qc, in, *dd); });
   qc.printStatistics(std::cout);
 }
 
@@ -42,7 +49,6 @@ TEST_P(RandomClifford, buildFunctionality) {
 
   auto dd = std::make_unique<dd::Package<>>(nq);
   auto qc = qc::RandomCliffordCircuit(nq, nq * nq, 12345);
-  std::cout << qc << "\n";
-  ASSERT_NO_THROW({ buildFunctionality(&qc, *dd); });
+  ASSERT_NO_THROW({ dd::buildFunctionality(&qc, *dd); });
   qc.printStatistics(std::cout);
 }
