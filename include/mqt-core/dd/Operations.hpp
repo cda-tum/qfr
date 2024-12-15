@@ -124,12 +124,12 @@ qc::MatrixDD getStandardOperationDD(const qc::StandardOperation& op,
   }
 
   if (targetQubits.size() == 1) {
-    return dd.makeGateDD(opToSingleGateMatrix(type, params), controls,
+    return dd.makeGateDD(opToSingleQubitGateMatrix(type, params), controls,
                          targetQubits[0U]);
   }
   if (targetQubits.size() == 2) {
-    return dd.makeTwoQubitGateDD(opToTwoQubitGateMatrix(type, params),
-                                 controls, targetQubits[0U], targetQubits[1U]);
+    return dd.makeTwoQubitGateDD(opToTwoQubitGateMatrix(type, params), controls,
+                                 targetQubits[0U], targetQubits[1U]);
   }
   throw qc::QFRException("Invalid number of targets for standard operation");
 }
